@@ -32,16 +32,10 @@ const quote = string => {
 
 
 /**
- * @callback Replacer
- * @param {any} this
- * @param {string} key
  * @param {any} value
- */
-
-/**
- * @param {any} value
- * @param {Replacer} [replacer]
+ * @param {import('../bases.d.ts').Replacer} [replacer]
  * @param {string|number} [space]
+ * @returns {string}
  */
 export default function stringify(value, replacer, space) {
 	let gap = '';
@@ -61,7 +55,7 @@ export default function stringify(value, replacer, space) {
 		replacer && typeof replacer != 'function' &&
 		!(replacer instanceof Array)
 	) {
-		throw Error(T('ArgumentError.invalidStringifyReplacer', { value }, 'JSONBigint.stringify'));
+		throw Error(T('stringify.invalid-replacer', { value }, 'JSONBigint.stringify'));
 	}
 
 

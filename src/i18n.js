@@ -9,4 +9,4 @@ import zh from '../locale/zh.json';
 loadI18NResource('@nuogz/json-bigint', { en, zh });
 
 
-export const T = TT('@nuogz/json-bigint');
+export const { T, TS } = TT('@nuogz/json-bigint');

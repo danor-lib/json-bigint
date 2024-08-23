@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.4.0 - 2024.08.23 14
+* docs: renew locale with latest `@nuogz/i18n`
+* docs: renew types
+* deps: bump up dependencies
+* chore: renew develop environments
+
+
 ## v1.3.1 - 2023.12.05 16
 * fix `test/proto.test.js`
 * tweak enviroment
