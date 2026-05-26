@@ -1,49 +1,38 @@
 {
-	"name": "@nuogz/json-bigint",
-	"version": "1.4.0",
+	"name": "@danor-lib/json-bigint",
+	"version": "2.0.0",
 	"description": "JSON parse and stringify with native BigInt and ESM support in modern JavaScript",
 	"author": "DanoR",
 	"license": "LGPL-3.0-or-later",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/nuogz/json-bigint.git"
+		"url": "git+https://github.com/danor-lib/json-bigint.git"
 	},
 	"private": false,
+	"sideEffects": false,
 	"type": "module",
 	"typesSource": [
 		"node",
 		"browser"
 	],
-	"sideEffects": false,
 	"engines": {
-		"node": ">=20"
-	},
-	"main": "./index.js",
-	"browser": {
-		"./src/i18n.lib.js": "./src/i18n.js"
+		"node": ">=26"
 	},
 	"files": [
 		"index.js",
-		"src/**",
-		"locale/**",
+		"src/**/*.js",
 		"types/**"
 	],
+	"main": "./index.js",
 	"typings": "./types/index.d.ts",
-	"scripts": {
-		"declare": "tsc",
-		"postdeclare": "copy /Y bases.d.ts types"
-	},
 	"dependencies": {
-		"@nuogz/i18n": "^3.7.4"
+		"@danor-lib/error": "^2.0.0"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.9.0",
-		"@stylistic/eslint-plugin-js": "^2.6.4",
-		"@types/node": "20",
-		"chai": "^4.5.0",
-		"eslint": "^9.9.0",
-		"globals": "^15.9.0",
-		"mocha": "^10.7.3",
-		"typescript": "^5.5.4"
+		"@eslint/js": "^10.0.1",
+		"@stylistic/eslint-plugin": "^5.10.0",
+		"@types/node": "^25.9.1",
+		"eslint": "^10.4.0",
+		"globals": "^17.6.0"
 	}
 }

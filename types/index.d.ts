@@ -1,5 +1,6 @@
-export { default as parse } from "./src/parse.js";
-export { default as stringify } from "./src/stringify.js";
-export type Reviver = import("./bases.d.ts").Reviver;
-export type Replacer = import("./bases.d.ts").Replacer;
-export type ParseOption = import("./bases.d.ts").ParseOption;
+export { Reviver } from './types.ts';
+export { Replacer } from './types.ts';
+export { ParseOption } from './types.ts';
+
+export { parse } from './src/parse.js';
+export { stringify } from './src/stringify.js';

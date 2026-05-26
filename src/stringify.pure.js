@@ -1,4 +1,6 @@
-import { T } from './i18n.lib.js';
+import { RichError } from '@danor-lib/error';
+
+/** @import { Replacer } from '../types.ts' */
 
 
 
@@ -20,11 +22,11 @@ const meta = {
 // backslash characters, then we can safely slap some quotes around it.
 // Otherwise we must also replace the offending characters with safe escape
 // sequences.
-const quote = string => {
+const quote = (string) => {
 	escapable.lastIndex = 0;
 
 	const textQuote = escapable.test(string)
-		? string.replace(escapable, a => meta[a] ?? ('\\u' + a.charCodeAt(0).toString(16).padStart(4, '0')))
+		? string.replace(escapable, (a) => meta[a] ?? ('\\u' + a.charCodeAt(0).toString(16).padStart(4, '0')))
 		: string;
 
 	return `"${textQuote}"`;
@@ -32,12 +34,16 @@ const quote = string => {
 
 
 /**
- * @param {any} value
- * @param {import('../bases.d.ts').Replacer} [replacer]
- * @param {string|number} [space]
+ * Convert a JavaScript value to a JavaScript Object Notation (JSON) string
+ * @param {any} value The value to convert to a JSON string
+ * @param {Replacer} [replacer] A function that transforms the results. This function is called for each member of the object
+ * @param {string|number} [space] A string or number that's used to insert white space into the output JSON string for readability purposes
+ * - If this is a number, it indicates the number of space characters to use as white space
+ * - If this is a string, it contains the characters used as white space
+ * - If this parameter is not provided (or is null), no white space is used
  * @returns {string}
  */
-export default function stringify(value, replacer, space) {
+export function stringify(value, replacer, space) {
 	let gap = '';
 
 
@@ -55,7 +61,10 @@ export default function stringify(value, replacer, space) {
 		replacer && typeof replacer != 'function' &&
 		!(replacer instanceof Array)
 	) {
-		throw Error(T('stringify.invalid-replacer', { value }, 'JSONBigint.stringify'));
+		throw new RichError({
+			code: 'invalid-replacer', at: 'JSONBigInt.stringify',
+			data: { value },
+		});
 	}
 
 
@@ -63,31 +72,31 @@ export default function stringify(value, replacer, space) {
 		let length;
 		let mind = gap;
 		let partial;
-		let value = holder[key];
+		let val = holder[key];
 
 
 		// If the value has a toJSON method, call it to obtain a replacement value.
-		if(typeof value?.toJSON == 'function') {
-			value = value.toJSON(key);
+		if(typeof val?.toJSON == 'function') {
+			val = val.toJSON(key);
 		}
 
 
 		// If we were called with a replacer function, then call the replacer to
 		// obtain a replacement value.
 		if(typeof replacer == 'function') {
-			value = replacer.call(holder, key, value);
+			val = replacer.call(holder, key, val);
 		}
 
 
 		// What happens next depends on the value's type.
-		switch(typeof value) {
+		switch(typeof val) {
 			case 'string': {
-				return quote(value);
+				return quote(val);
 			}
 
 			// JSON numbers must be finite. Encode non-finite numbers as null.
 			case 'number': {
-				return isFinite(value) ? String(value) : 'null';
+				return isFinite(val) ? String(val) : 'null';
 			}
 
 			// If the value is a boolean or null, convert it to a string. Note:
@@ -96,7 +105,7 @@ export default function stringify(value, replacer, space) {
 			case 'boolean':
 			case 'null':
 			case 'bigint': {
-				return String(value);
+				return String(val);
 			}
 
 
@@ -105,7 +114,7 @@ export default function stringify(value, replacer, space) {
 			// Due to a specification blunder in ECMAScript, typeof null is 'object',
 			// so watch out for that case.
 			case 'object': {
-				if(!value) { return 'null'; }
+				if(!val) { return 'null'; }
 
 
 				// Make an array to hold the partial results of stringifying this object value.
@@ -114,12 +123,12 @@ export default function stringify(value, replacer, space) {
 
 
 				// Is the value an array?
-				if(value instanceof Array) {
+				if(val instanceof Array) {
 					// The value is an array. Stringify every element. Use null as a placeholder
 					// for non-JSON values.
-					length = value.length;
+					length = val.length;
 					for(let i = 0; i < length; i++) {
-						partial[i] = str(i, value) || 'null';
+						partial[i] = str(i, val) || 'null';
 					}
 
 					// Join all of the elements together, separated with commas, and wrap them in
@@ -140,7 +149,7 @@ export default function stringify(value, replacer, space) {
 					for(let i = 0; i < length; i++) {
 						if(typeof replacer[i] == 'string') {
 							const k = replacer[i];
-							const v = str(k, value);
+							const v = str(k, val);
 							if(v) {
 								partial.push(quote(k) + (gap ? ': ' : ':') + v);
 							}
@@ -149,8 +158,8 @@ export default function stringify(value, replacer, space) {
 				}
 				else {
 					// Otherwise, iterate through all of the keys in the object.
-					Object.keys(value).forEach(k => {
-						const v = str(k, value);
+					Object.keys(val).forEach((k) => {
+						const v = str(k, val);
 
 						if(v) {
 							partial.push(quote(k) + (gap ? ': ' : ':') + v);

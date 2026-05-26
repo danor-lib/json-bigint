@@ -1,8 +1,7 @@
-/** @typedef {import('./bases.d.ts').Reviver} Reviver */
-/** @typedef {import('./bases.d.ts').Replacer} Replacer */
-/** @typedef {import('./bases.d.ts').ParseOption} ParseOption */
+/** @typedef {import('./types.ts').Reviver} Reviver */
+/** @typedef {import('./types.ts').Replacer} Replacer */
+/** @typedef {import('./types.ts').ParseOption} ParseOption */
 
 
-
-export { default as parse } from './src/parse.js';
-export { default as stringify } from './src/stringify.js';
+export { parse } from './src/parse.pure.js';
+export { stringify } from './src/stringify.pure.js';

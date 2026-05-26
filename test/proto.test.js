@@ -1,87 +1,72 @@
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import assert from 'node:assert/strict';
+import test from 'node:test';
 
-import parse from '../src/parse.js';
-
-
-
-const console = globalThis.console;
-
-describe('__proto__ and constructor assignment', () => {
-	if(!BigInt) { return console.error('No native BigInt. Test is break...'); }
+import { parse } from '../index.js';
 
 
-	it('Should set __proto__ property but not a prototype if protoAction is set to preserve', done => {
+
+test('__proto__ and constructor assignment handling', async (t) => {
+	if(!BigInt) { throw new Error('No native BigInt. Test is break...'); }
+
+
+	await t.test('sets __proto__ property without changing prototype when protoAction is preserve', () => {
 		const object1 = parse('{ "__proto__": 1000000000000000 }', null, { protoAction: 'preserve' });
 
-		expect(Object.getPrototypeOf(object1)).to.equal(Object.prototype);
+		assert.equal(Object.getPrototypeOf(object1), Object.prototype);
 
 
 		const object2 = parse('{ "__proto__": { "admin": true } }', null, { protoAction: 'preserve' });
 
-		expect(object2.admin).to.equal(true);
-		expect(Object.getPrototypeOf(object2).admin).to.equal(true);
-
-
-		done();
+		assert.equal(object2.admin, true);
+		assert.equal(Object.getPrototypeOf(object2).admin, true);
 	});
 
-	it('Should throw an exception if protoAction set to invalid value', done => {
-		expect(() => parse('{ "__proto__": 1000000000000000 }', undefined, { protoAction: 'invalid value' }))
-			.to.throw('JSONBigint.parse --> \'option.protoAction\' argument must be one of \'error\', \'ignore\', \'preserve\' or undefined, value: invalid value <string>');
-
-
-		done();
+	await t.test('throws when protoAction is invalid', () => {
+		assert.throws(() =>
+			parse('{ "__proto__": 1000000000000000 }', undefined, { protoAction: 'invalid value' }),
+			{ code: 'invalid-type-option-protoAction', at: 'JSONBigInt.parse' }
+		);
 	});
 
-	it('Should throw an exception if constructorAction set to invalid value', done => {
-		expect(() => parse('{ "__proto__": 1000000000000000 }', undefined, { constructorAction: 'invalid value' }))
-			.to.throw('JSONBigint.parse --> \'option.constructorAction\' argument must be one of \'error\', \'ignore\', \'preserve\' or undefined, value: invalid value <string>');
-
-
-		done();
+	await t.test('throws when constructorAction is invalid', () => {
+		assert.throws(() =>
+			parse('{ "__proto__": 1000000000000000 }', undefined, { constructorAction: 'invalid value' }),
+			{ code: 'invalid-type-option-constructorAction', at: 'JSONBigInt.parse' }
+		);
 	});
 
-	it('Should throw an exception if protoAction set to error and there is __proto__ property', done => {
-		expect(() => parse('{ "\\u005f_proto__": 1000000000000000 }', undefined, { protoAction: 'error' }))
-			.to.throw('JSONBigint.parse --> object contains forbidden prototype property \'__proto__\', index: 20');
-
-
-		done();
+	await t.test('throws when protoAction is error and __proto__ property exists', () => {
+		assert.throws(() =>
+			parse('{ "\\u005f_proto__": 1000000000000000 }', undefined, { protoAction: 'error' }),
+			{ code: 'contain-forbidden-prototype', at: 'JSONBigInt.parse' }
+		);
 	});
 
-	it('Should throw an exception if constructorAction set to error and there is constructor property', done => {
-		expect(() => parse('{ "constructor": 1000000000000000 }', undefined, { constructorAction: 'error' }))
-			.to.throw('JSONBigint.parse --> object contains forbidden constructor property \'constructor\', index: 17');
-
-
-		done();
+	await t.test('throws when constructorAction is error and constructor property exists', () => {
+		assert.throws(() =>
+			parse('{ "constructor": 1000000000000000 }', undefined, { constructorAction: 'error' }),
+			{ code: 'contain-forbidden-constructor', at: 'JSONBigInt.parse' }
+		);
 	});
 
-	it('Should ignore __proto__ property if protoAction is set to ignore', done => {
+	await t.test('ignores __proto__ when protoAction is ignore', () => {
 		const object = parse(
 			'{ "__proto__": 1000000000000000, "a" : 42, "nested": { "__proto__": false, "b": 43 } }',
 			undefined,
 			{ protoAction: 'ignore' }
 		);
 
-		expect(Object.getPrototypeOf(object)).to.equal(Object.prototype);
-		expect(object).to.deep.equal({ a: 42, nested: { b: 43 } });
-
-
-		done();
+		assert.equal(Object.getPrototypeOf(object), Object.prototype);
+		assert.deepEqual(object, { a: 42, nested: { b: 43 } });
 	});
 
-	it('Should ignore constructor property if constructorAction is set to ignore', done => {
+	await t.test('ignores constructor when constructorAction is ignore', () => {
 		const object = parse(
 			'{ "constructor": 1000000000000000, "a" : 42, "nested": { "constructor": false, "b": 43 } }',
 			undefined,
 			{ constructorAction: 'ignore' }
 		);
 
-		expect(object).to.deep.equal({ a: 42, nested: { b: 43 } });
-
-
-		done();
+		assert.deepEqual(object, { a: 42, nested: { b: 43 } });
 	});
 });

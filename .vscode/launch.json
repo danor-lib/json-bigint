@@ -17,31 +17,16 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Mocha Current Test",
+			"name": "Node Tests",
 			"console": "integratedTerminal",
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"cwd": "${fileDirname}",
-			"runtimeExecutable": "npx",
-			"program": "mocha",
+			"cwd": "${workspaceFolder}",
+			"runtimeExecutable": "node",
 			"args": [
-				"${file}",
-			]
-		},
-		{
-			"type": "node",
-			"request": "launch",
-			"name": "Mocha All Tests",
-			"console": "integratedTerminal",
-			"skipFiles": [
-				"<node_internals>/**"
-			],
-			"cwd": "${workspaceFolder}/test",
-			"runtimeExecutable": "npx",
-			"program": "mocha",
-			"args": [
-				"*.test.js",
+				"--test",
+				"test/*.test.js"
 			]
 		}
 	]

@@ -1,4 +1,6 @@
-import { T } from './i18n.lib.js';
+import { RichError } from '@danor-lib/error';
+
+/** @import { ParseOption, Reviver } from '../types.ts' */
 
 
 
@@ -18,13 +20,13 @@ const regexpConstructorKey = /^(?:c|\\u0063)(?:o|\\u006[Ff])(?:n|\\u006[Ee])(?:s
 
 
 /**
- * Converts a JavaScript Object Notation (JSON) string into an object.
- * @param {string} text A valid JSON string.
- * @param {import('../bases.d.ts').Reviver} reviver A function that transforms the results. This function is called for each member of the object.
- * - If a member contains nested objects, the nested objects are transformed before the parent object is.
- * @param {import('../bases.d.ts').ParseOption} option
+ * Convert a JavaScript Object Notation (JSON) string into an object
+ * @param {string} text A valid JSON string
+ * @param {Reviver} [reviver] A function that transforms the results. This function is called for each member of the object
+ * - If a member contains nested objects, the nested objects are transformed before the parent object is transformed
+ * @param {ParseOption} [option] The option for parsing JSON string
  */
-export default function parse(text, reviver, option) {
+export function parse(text, reviver, option) {
 	const optionFinal = {
 		preferParseAsBigInt: Boolean(option?.preferParseAsBigInt ?? false),
 		preferBigIntString: Boolean(option?.preferBigIntString ?? false),
@@ -37,7 +39,10 @@ export default function parse(text, reviver, option) {
 		optionFinal.protoAction != 'ignore' &&
 		optionFinal.protoAction != 'preserve'
 	) {
-		throw Error(T('parse.invalid-type-option-protoAction', { value: optionFinal.protoAction }, 'JSONBigint.parse'));
+		throw new RichError({
+			code: 'invalid-type-option-protoAction', at: 'JSONBigInt.parse',
+			data: { protoAction: optionFinal.protoAction, option },
+		});
 	}
 
 	if(
@@ -45,7 +50,10 @@ export default function parse(text, reviver, option) {
 		optionFinal.constructorAction != 'ignore' &&
 		optionFinal.constructorAction != 'preserve'
 	) {
-		throw Error(T('parse.invalid-type-option-constructorAction', { value: optionFinal.constructorAction }, 'JSONBigint.parse'));
+		throw new RichError({
+			code: 'invalid-type-option-constructorAction', at: 'JSONBigInt.parse',
+			data: { constructorAction: optionFinal.constructorAction, option },
+		});
 	}
 
 
@@ -64,10 +72,13 @@ export default function parse(text, reviver, option) {
 		}
 	};
 
-	const next = c => {
+	const next = (c) => {
 		// If a c parameter is provided, verify that it matches the current character.
 		if(c && c !== charNow) {
-			throw Error(T('parse.unexpected-char', { charExpected: c, char: charNow, index: indexChar }, 'JSONBigint.parse'));
+			throw new RichError({
+				code: 'unexpected-char', at: 'JSONBigInt.parse',
+				data: { char: charNow, index: indexChar, charExpected: c },
+			});
 		}
 
 		// Get the next character. When there are no more characters,
@@ -119,7 +130,10 @@ export default function parse(text, reviver, option) {
 
 
 		if(!isFinite(number)) {
-			throw Error(T('parse.bad-number', { string: stringNumber, index: indexChar }, 'JSONBigint.parse'));
+			throw new RichError({
+				code: 'bad-number', at: 'JSONBigInt.parse',
+				data: { string: stringNumber, index: indexChar },
+			});
 		}
 
 		if(Number.isSafeInteger(number)) {
@@ -183,7 +197,10 @@ export default function parse(text, reviver, option) {
 			}
 		}
 
-		throw Error(T('parse.bad-string', { string: stringText.substring(indexStart - 1, indexChar - 1), index: indexChar }, 'JSONBigint.parse'));
+		throw new RichError({
+			code: 'bad-string', at: 'JSONBigInt.parse',
+			data: { string: stringText.substring(indexStart - 1, indexChar - 1), index: indexChar },
+		});
 	};
 
 
@@ -208,7 +225,10 @@ export default function parse(text, reviver, option) {
 			}
 		}
 
-		throw Error(T('parse.unexpected-word', { char: charNow, index: indexChar }, 'JSONBigint.parse'));
+		throw new RichError({
+			code: 'unexpected-word', at: 'JSONBigInt.parse',
+			data: { char: charNow, index: indexChar },
+		});
 	};
 
 
@@ -243,7 +263,10 @@ export default function parse(text, reviver, option) {
 			}
 		}
 
-		throw Error(T('parse.bad-array', { string: stringText.substring(indexStart - 1, indexChar - 1), index: indexChar }, 'JSONBigint.parse'));
+		throw new RichError({
+			code: 'bad-array', at: 'JSONBigInt.parse',
+			data: { string: stringText.substring(indexStart - 1, indexChar - 1), index: indexChar },
+		});
 	};
 
 	const parseObject = () => {
@@ -270,7 +293,10 @@ export default function parse(text, reviver, option) {
 
 				if(regexpProtoKey.test(key)) {
 					if(optionFinal.protoAction == 'error') {
-						throw Error(T('parse.contain-forbidden-prototype', { key, index: indexChar }, 'JSONBigint.parse'));
+						throw new RichError({
+							code: 'contain-forbidden-prototype', at: 'JSONBigInt.parse',
+							data: { key, index: indexChar },
+						});
 					}
 					else if(optionFinal.protoAction == 'ignore') {
 						parseValue();
@@ -281,7 +307,10 @@ export default function parse(text, reviver, option) {
 				}
 				else if(regexpConstructorKey.test(key)) {
 					if(optionFinal.constructorAction == 'error') {
-						throw Error(T('parse.contain-forbidden-constructor', { key, index: indexChar }, 'JSONBigint.parse'));
+						throw new RichError({
+							code: 'contain-forbidden-constructor', at: 'JSONBigInt.parse',
+							data: { key, index: indexChar },
+						});
 					}
 					else if(optionFinal.constructorAction == 'ignore') {
 						parseValue();
@@ -307,7 +336,10 @@ export default function parse(text, reviver, option) {
 			}
 		}
 
-		throw Error(T('parse.bad-object', { string: stringText.substring(indexStart - 1, indexChar - 1), index: indexChar }, 'JSONBigint.parse'));
+		throw new RichError({
+			code: 'bad-object', at: 'JSONBigInt.parse',
+			data: { string: stringText.substring(indexStart - 1, indexChar - 1), index: indexChar },
+		});
 	};
 
 	/** Place holder for the value function */
@@ -337,7 +369,12 @@ export default function parse(text, reviver, option) {
 	const result = parseValue();
 
 	skipWhite();
-	if(charNow) { throw Error(T('parse.unexpected-word', { char: charNow, index: indexChar }, 'JSONBigint.parse')); }
+	if(charNow) {
+		throw new RichError({
+			code: 'unexpected-word', at: 'JSONBigInt.parse',
+			data: { char: charNow, index: indexChar },
+		});
+	}
 
 
 	if(typeof reviver == 'function') {
@@ -345,7 +382,7 @@ export default function parse(text, reviver, option) {
 			const value = holder[key];
 
 			if(value && typeof value == 'object') {
-				Object.keys(value).forEach(k => {
+				Object.keys(value).forEach((k) => {
 					const v = walk(value, k);
 
 					if(v !== undefined) {

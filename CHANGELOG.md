@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v2.0.0 - 2026.05.26 14
+* refactor!: due to a change in design philosophy, remove all error message text
+  * in my design philosophy, an error should only contain a code and associated data. text-based message should be rendered by the terminal (including i18n and terminal highlighting)
+* docs: add README and English version
+* docs: add error code reference table
+* docs: improve types and export
+* test: refactor `describe()` and `it()` with `test()` from `node:test`
+* regular: improve enviroment
+* regular: bump up dependencies
+
+
 ## v1.4.0 - 2024.08.23 14
 * docs: renew locale with latest `@nuogz/i18n`
 * docs: renew types

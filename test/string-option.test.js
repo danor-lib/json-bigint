@@ -1,33 +1,25 @@
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import assert from 'node:assert/strict';
+import test from 'node:test';
 
-import parse from '../src/parse.js';
+import { parse } from '../index.js';
 
 
 
-const console = globalThis.console;
-
-describe('Testing "preferBigIntString" option', () => {
-	if(!BigInt) { return console.error('No native BigInt. Test is break...'); }
+test('"preferBigIntString" option', async (t) => {
+	if(!BigInt) { throw new Error('No native BigInt. Test is break...'); }
 
 
 	const input = '{ "key": 12345678901234567 }';
 
-	it('Should show that the key is of type bigint', done => {
+	await t.test('parses the key as bigint by default', () => {
 		const result = parse(input);
 
-		expect(typeof result.key).to.equal('bigint');
-
-
-		done();
+		assert.equal(typeof result.key, 'bigint');
 	});
 
-	it('Should show that key is of type string, when preferBigIntString option is true', done => {
+	await t.test('parses the key as string when preferBigIntString is true', () => {
 		const result = parse(input, undefined, { preferBigIntString: true });
 
-		expect(typeof result.key).to.equal('string');
-
-
-		done();
+		assert.equal(typeof result.key, 'string');
 	});
 });

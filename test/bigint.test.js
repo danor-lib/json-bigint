@@ -1,47 +1,38 @@
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import assert from 'node:assert/strict';
+import test from 'node:test';
 
-import parse from '../src/parse.js';
-import stringify from '../src/stringify.js';
-
+import { parse, stringify } from '../index.js';
 
 
-const console = globalThis.console;
 
-describe('Testing bigint support', () => {
-	if(!BigInt) { return console.error('No native BigInt. Test is break...'); }
+test('bigint support', async (t) => {
+	if(!BigInt) { throw new Error('No native BigInt. Test is break...'); }
 
 
 	const input = '{"big":9223372036854775807,"small":123}';
 
-	it('Should show classic JSON.parse lacks bigint support', done => {
+	await t.test('classic JSON.parse lacks bigint support', () => {
 		const object = JSON.parse(input);
 
-		expect(object.small.toString(), 'string from small int value').to.equal('123');
-		expect(object.big.toString(), 'string from big int value').to.not.equal('9223372036854775807');
+		assert.equal(object.small.toString(), '123', 'string from small int value');
+		assert.notEqual(object.big.toString(), '9223372036854775807', 'string from big int value');
 
 
 		const output = JSON.stringify(object);
 
-		expect(output).to.not.equal(input);
-
-
-		done();
+		assert.notEqual(output, input);
 	});
 
-	it('Should show JSONBigInt does support bigint parse/stringify roundtrip', done => {
+	await t.test('JSONBigInt supports bigint parse/stringify roundtrip', () => {
 		const object = parse(input);
 
-		expect(object.small.toString(), 'string from small int value').to.equal('123');
-		expect(object.big.toString(), 'string from big int value').to.equal('9223372036854775807');
-		expect(typeof object.big, 'typeof big int type').to.equal('bigint');
+		assert.equal(object.small.toString(), '123', 'string from small int value');
+		assert.equal(object.big.toString(), '9223372036854775807', 'string from big int value');
+		assert.equal(typeof object.big, 'bigint', 'typeof big int type');
 
 
 		const output = stringify(object);
 
-		expect(output).to.equal(input);
-
-
-		done();
+		assert.equal(output, input);
 	});
 });
