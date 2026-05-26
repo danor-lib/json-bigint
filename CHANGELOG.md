@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v2.0.1 - 2026.05.26 16
+* docs: **IMPORTANT!** update license to ***MIT***
+* docs: add refactoring note in README
+
+
 ## v2.0.0 - 2026.05.26 14
 * refactor!: due to a change in design philosophy, remove all error message text
   * in my design philosophy, an error should only contain a code and associated data. text-based message should be rendered by the terminal (including i18n and terminal highlighting)

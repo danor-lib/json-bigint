@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@danor-lib/error':
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^2.0.1
+        version: 2.0.1
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -30,8 +30,8 @@ importers:
 
 packages:
 
-  '@danor-lib/error@2.0.0':
-    resolution: {integrity: sha512-lZ1vdhYF6kau7w3pYEdKsU6oMWP7uK09Ztj1GY7Paa59inIkqaTU8lgwJzfejN0tZ3/jym6rgKmaWdwtBZn3Fw==}
+  '@danor-lib/error@2.0.1':
+    resolution: {integrity: sha512-NomP2ClDMfroL3YlWDHXV6eUDG1z1Gxd2GgbRpTncGgTKRlqq1dVzWvsjT1U6v5X0XeutlrJbM5Wz95UhCFMAA==}
     engines: {node: '>=26'}
 
   '@eslint-community/eslint-utils@4.9.1':
@@ -352,7 +352,7 @@ packages:
 
 snapshots:
 
-  '@danor-lib/error@2.0.0': {}
+  '@danor-lib/error@2.0.1': {}
 
   '@eslint-community/eslint-utils@4.9.1(eslint@10.4.0)':
     dependencies:

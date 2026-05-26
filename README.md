@@ -9,10 +9,12 @@
 
 # @danor-lib/json-bigint
 ![Version](https://img.shields.io/github/package-json/v/danor-lib/json-bigint?style=flat-square)
-[![License](https://img.shields.io/github/license/danor-lib/json-bigint?style=flat-square)](https://www.gnu.org/licenses/lgpl-3.0-standalone.html)
+[![License](https://img.shields.io/github/license/danor-lib/json-bigint?style=flat-square)](https://opensource.org/license/mit)
 
 一个轻量级的 JSON 解析与序列化库，原生支持 `BigInt`。
 A lightweight JSON parser and serializer with native `BigInt` support.
+
+重构自[sidorares/json-bigint](https://github.com/sidorares/json-bigint)。
 
 ## 基础示例
 
