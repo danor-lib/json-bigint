@@ -60,16 +60,16 @@ Serializes a JavaScript value into a JSON string. Supports `BigInt` type and pre
 
 ## Error Code
 
-| Code                                  | At                   | Description                                                                                         | Context Data                  |
-| ------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------- |
-| invalid-type-option-protoAction       | JSONBigInt.parse     | Invalid `protoAction` option value, only `'error'`, `'ignore'`, and `'preserve'` are allowed.       | { protoAction, option }       |
-| invalid-type-option-constructorAction | JSONBigInt.parse     | Invalid `constructorAction` option value, only `'error'`, `'ignore'`, and `'preserve'` are allowed. | { constructorAction, option } |
-| contain-forbidden-prototype           | JSONBigInt.parse     | Object contains forbidden `__proto__` key                                                           | { key, index }                |
-| contain-forbidden-constructor         | JSONBigInt.parse     | Object contains forbidden `constructor` key                                                         | { key, index }                |
-| bad-number                            | JSONBigInt.parse     | Invalid number format or non-finite number                                                          | { string, index }             |
-| bad-string                            | JSONBigInt.parse     | Invalid string format (missing closing quote or escape error)                                       | { string, index }             |
-| bad-array                             | JSONBigInt.parse     | Invalid array format                                                                                | { string, index }             |
-| bad-object                            | JSONBigInt.parse     | Invalid object format                                                                               | { string, index }             |
-| unexpected-char                       | JSONBigInt.parse     | Expected to match a character but encountered another character                                     | { char, index, charExpected } |
-| unexpected-word                       | JSONBigInt.parse     | Encountered an unrecognized literal token                                                           | { char, index }               |
-| invalid-replacer                      | JSONBigInt.stringify | Invalid `replacer` parameter type (must be a function or array)                                     | { value }                     |
+| Code                                  | At                                | Description                                                                                         | Context Data                  |
+| ------------------------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------- |
+| invalid-type-option-protoAction       | json-bigint/parse(3:options)      | Invalid `protoAction` option value, only `'error'`, `'ignore'`, and `'preserve'` are allowed.       | { protoAction, option }       |
+| invalid-type-option-constructorAction | json-bigint/parse(3:options)      | Invalid `constructorAction` option value, only `'error'`, `'ignore'`, and `'preserve'` are allowed. | { constructorAction, option } |
+| contain-forbidden-prototype           | json-bigint/parse                 | Object contains forbidden `__proto__` key                                                           | { key, index }                |
+| contain-forbidden-constructor         | json-bigint/parse                 | Object contains forbidden `constructor` key                                                         | { key, index }                |
+| bad-number                            | json-bigint/parse                 | Invalid number format or non-finite number                                                          | { string, index }             |
+| bad-string                            | json-bigint/parse                 | Invalid string format (missing closing quote or escape error)                                       | { string, index }             |
+| bad-array                             | json-bigint/parse                 | Invalid array format                                                                                | { string, index }             |
+| bad-object                            | json-bigint/parse                 | Invalid object format                                                                               | { string, index }             |
+| unexpected-char                       | json-bigint/parse                 | Expected to match a character but encountered another character                                     | { char, index, charExpected } |
+| unexpected-word                       | json-bigint/parse                 | Encountered an unrecognized literal token                                                           | { char, index }               |
+| invalid-replacer                      | json-bigint/stringify(2:replacer) | Invalid `replacer` parameter type (must be a function or array)                                     | { value }                     |

@@ -24,28 +24,28 @@ test('__proto__ and constructor assignment handling', async (t) => {
 	await t.test('throws when protoAction is invalid', () => {
 		assert.throws(() =>
 			parse('{ "__proto__": 1000000000000000 }', undefined, { protoAction: 'invalid value' }),
-			{ code: 'invalid-type-option-protoAction', at: 'JSONBigInt.parse' }
+			{ code: 'invalid-type-option-protoAction', at: 'json-bigint/parse(3:options)' }
 		);
 	});
 
 	await t.test('throws when constructorAction is invalid', () => {
 		assert.throws(() =>
 			parse('{ "__proto__": 1000000000000000 }', undefined, { constructorAction: 'invalid value' }),
-			{ code: 'invalid-type-option-constructorAction', at: 'JSONBigInt.parse' }
+			{ code: 'invalid-type-option-constructorAction', at: 'json-bigint/parse(3:options)' }
 		);
 	});
 
 	await t.test('throws when protoAction is error and __proto__ property exists', () => {
 		assert.throws(() =>
 			parse('{ "\\u005f_proto__": 1000000000000000 }', undefined, { protoAction: 'error' }),
-			{ code: 'contain-forbidden-prototype', at: 'JSONBigInt.parse' }
+			{ code: 'contain-forbidden-prototype', at: 'json-bigint/parse' }
 		);
 	});
 
 	await t.test('throws when constructorAction is error and constructor property exists', () => {
 		assert.throws(() =>
 			parse('{ "constructor": 1000000000000000 }', undefined, { constructorAction: 'error' }),
-			{ code: 'contain-forbidden-constructor', at: 'JSONBigInt.parse' }
+			{ code: 'contain-forbidden-constructor', at: 'json-bigint/parse' }
 		);
 	});
 

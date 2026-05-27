@@ -62,7 +62,7 @@ export function stringify(value, replacer, space) {
 		!(replacer instanceof Array)
 	) {
 		throw new RichError({
-			code: 'invalid-replacer', at: 'JSONBigInt.stringify',
+			code: 'invalid-replacer', at: 'json-bigint/stringify(2:replacer)',
 			data: { value },
 		});
 	}

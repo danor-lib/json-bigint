@@ -1,6 +1,6 @@
 {
 	"name": "@danor-lib/json-bigint",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "JSON parse and stringify with native BigInt and ESM support in modern JavaScript",
 	"author": "DanoR",
 	"license": "MIT",

@@ -24,14 +24,14 @@ const regexpConstructorKey = /^(?:c|\\u0063)(?:o|\\u006[Ff])(?:n|\\u006[Ee])(?:s
  * @param {string} text A valid JSON string
  * @param {Reviver} [reviver] A function that transforms the results. This function is called for each member of the object
  * - If a member contains nested objects, the nested objects are transformed before the parent object is transformed
- * @param {ParseOption} [option] The option for parsing JSON string
+ * @param {ParseOption} [options] The option for parsing JSON string
  */
-export function parse(text, reviver, option) {
+export function parse(text, reviver, options) {
 	const optionFinal = {
-		preferParseAsBigInt: Boolean(option?.preferParseAsBigInt ?? false),
-		preferBigIntString: Boolean(option?.preferBigIntString ?? false),
-		protoAction: String(option?.protoAction ?? 'error'),
-		constructorAction: String(option?.constructorAction ?? 'error'),
+		preferParseAsBigInt: Boolean(options?.preferParseAsBigInt ?? false),
+		preferBigIntString: Boolean(options?.preferBigIntString ?? false),
+		protoAction: String(options?.protoAction ?? 'error'),
+		constructorAction: String(options?.constructorAction ?? 'error'),
 	};
 
 	if(
@@ -40,8 +40,8 @@ export function parse(text, reviver, option) {
 		optionFinal.protoAction != 'preserve'
 	) {
 		throw new RichError({
-			code: 'invalid-type-option-protoAction', at: 'JSONBigInt.parse',
-			data: { protoAction: optionFinal.protoAction, option },
+			code: 'invalid-type-option-protoAction', at: 'json-bigint/parse(3:options)',
+			data: { protoAction: optionFinal.protoAction, option: options },
 		});
 	}
 
@@ -51,8 +51,8 @@ export function parse(text, reviver, option) {
 		optionFinal.constructorAction != 'preserve'
 	) {
 		throw new RichError({
-			code: 'invalid-type-option-constructorAction', at: 'JSONBigInt.parse',
-			data: { constructorAction: optionFinal.constructorAction, option },
+			code: 'invalid-type-option-constructorAction', at: 'json-bigint/parse(3:options)',
+			data: { constructorAction: optionFinal.constructorAction, option: options },
 		});
 	}
 
@@ -76,7 +76,7 @@ export function parse(text, reviver, option) {
 		// If a c parameter is provided, verify that it matches the current character.
 		if(c && c !== charNow) {
 			throw new RichError({
-				code: 'unexpected-char', at: 'JSONBigInt.parse',
+				code: 'unexpected-char', at: 'json-bigint/parse',
 				data: { char: charNow, index: indexChar, charExpected: c },
 			});
 		}
@@ -131,7 +131,7 @@ export function parse(text, reviver, option) {
 
 		if(!isFinite(number)) {
 			throw new RichError({
-				code: 'bad-number', at: 'JSONBigInt.parse',
+				code: 'bad-number', at: 'json-bigint/parse',
 				data: { string: stringNumber, index: indexChar },
 			});
 		}
@@ -198,7 +198,7 @@ export function parse(text, reviver, option) {
 		}
 
 		throw new RichError({
-			code: 'bad-string', at: 'JSONBigInt.parse',
+			code: 'bad-string', at: 'json-bigint/parse',
 			data: { string: stringText.substring(indexStart - 1, indexChar - 1), index: indexChar },
 		});
 	};
@@ -226,7 +226,7 @@ export function parse(text, reviver, option) {
 		}
 
 		throw new RichError({
-			code: 'unexpected-word', at: 'JSONBigInt.parse',
+			code: 'unexpected-word', at: 'json-bigint/parse',
 			data: { char: charNow, index: indexChar },
 		});
 	};
@@ -264,7 +264,7 @@ export function parse(text, reviver, option) {
 		}
 
 		throw new RichError({
-			code: 'bad-array', at: 'JSONBigInt.parse',
+			code: 'bad-array', at: 'json-bigint/parse',
 			data: { string: stringText.substring(indexStart - 1, indexChar - 1), index: indexChar },
 		});
 	};
@@ -294,7 +294,7 @@ export function parse(text, reviver, option) {
 				if(regexpProtoKey.test(key)) {
 					if(optionFinal.protoAction == 'error') {
 						throw new RichError({
-							code: 'contain-forbidden-prototype', at: 'JSONBigInt.parse',
+							code: 'contain-forbidden-prototype', at: 'json-bigint/parse',
 							data: { key, index: indexChar },
 						});
 					}
@@ -308,7 +308,7 @@ export function parse(text, reviver, option) {
 				else if(regexpConstructorKey.test(key)) {
 					if(optionFinal.constructorAction == 'error') {
 						throw new RichError({
-							code: 'contain-forbidden-constructor', at: 'JSONBigInt.parse',
+							code: 'contain-forbidden-constructor', at: 'json-bigint/parse',
 							data: { key, index: indexChar },
 						});
 					}
@@ -337,7 +337,7 @@ export function parse(text, reviver, option) {
 		}
 
 		throw new RichError({
-			code: 'bad-object', at: 'JSONBigInt.parse',
+			code: 'bad-object', at: 'json-bigint/parse',
 			data: { string: stringText.substring(indexStart - 1, indexChar - 1), index: indexChar },
 		});
 	};
@@ -371,7 +371,7 @@ export function parse(text, reviver, option) {
 	skipWhite();
 	if(charNow) {
 		throw new RichError({
-			code: 'unexpected-word', at: 'JSONBigInt.parse',
+			code: 'unexpected-word', at: 'json-bigint/parse',
 			data: { char: charNow, index: indexChar },
 		});
 	}

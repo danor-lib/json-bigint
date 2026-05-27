@@ -61,16 +61,16 @@ console.log(output); // '{"big":9223372036854775807}'
 
 ## 错误代码
 
-| 代码                                  | 位置                 | 描述                                                                     | 上下文数据                    |
-| ------------------------------------- | -------------------- | ------------------------------------------------------------------------ | ----------------------------- |
-| invalid-type-option-protoAction       | JSONBigInt.parse     | `protoAction` 选项值无效，仅允许 `'error'` `'ignore'` `'preserve'`       | { protoAction, option }       |
-| invalid-type-option-constructorAction | JSONBigInt.parse     | `constructorAction` 选项值无效，仅允许 `'error'` `'ignore'` `'preserve'` | { constructorAction, option } |
-| contain-forbidden-prototype           | JSONBigInt.parse     | 对象包含禁止的 `__proto__` 键                                            | { key, index }                |
-| contain-forbidden-constructor         | JSONBigInt.parse     | 对象包含禁止的 `constructor` 键                                          | { key, index }                |
-| bad-number                            | JSONBigInt.parse     | 数字格式无效或为非有限数                                                 | { string, index }             |
-| bad-string                            | JSONBigInt.parse     | 字符串格式无效（缺少闭合引号或转义错误）                                 | { string, index }             |
-| bad-array                             | JSONBigInt.parse     | 数组格式无效                                                             | { string, index }             |
-| bad-object                            | JSONBigInt.parse     | 对象格式无效                                                             | { string, index }             |
-| unexpected-char                       | JSONBigInt.parse     | 解析时期望匹配某个字符但遇到了其他字符                                   | { char, index, charExpected } |
-| unexpected-word                       | JSONBigInt.parse     | 遇到无法识别的字面量标记                                                 | { char, index }               |
-| invalid-replacer                      | JSONBigInt.stringify | `replacer` 参数类型无效（必须为函数或数组）                              | { value }                     |
+| 代码                                  | 位置                              | 描述                                                                     | 上下文数据                    |
+| ------------------------------------- | --------------------------------- | ------------------------------------------------------------------------ | ----------------------------- |
+| invalid-type-option-protoAction       | json-bigint/parse(3:options)      | `protoAction` 选项值无效，仅允许 `'error'` `'ignore'` `'preserve'`       | { protoAction, option }       |
+| invalid-type-option-constructorAction | json-bigint/parse(3:options)      | `constructorAction` 选项值无效，仅允许 `'error'` `'ignore'` `'preserve'` | { constructorAction, option } |
+| contain-forbidden-prototype           | json-bigint/parse                 | 对象包含禁止的 `__proto__` 键                                            | { key, index }                |
+| contain-forbidden-constructor         | json-bigint/parse                 | 对象包含禁止的 `constructor` 键                                          | { key, index }                |
+| bad-number                            | json-bigint/parse                 | 数字格式无效或为非有限数                                                 | { string, index }             |
+| bad-string                            | json-bigint/parse                 | 字符串格式无效（缺少闭合引号或转义错误）                                 | { string, index }             |
+| bad-array                             | json-bigint/parse                 | 数组格式无效                                                             | { string, index }             |
+| bad-object                            | json-bigint/parse                 | 对象格式无效                                                             | { string, index }             |
+| unexpected-char                       | json-bigint/parse                 | 解析时期望匹配某个字符但遇到了其他字符                                   | { char, index, charExpected } |
+| unexpected-word                       | json-bigint/parse                 | 遇到无法识别的字面量标记                                                 | { char, index }               |
+| invalid-replacer                      | json-bigint/stringify(2:replacer) | `replacer` 参数类型无效（必须为函数或数组）                              | { value }                     |
