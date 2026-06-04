@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v2.0.3 - 2026.06.04 17
+* docs: improve export of types and correct naming of a types file
+* regular: bump up dependencies
+
+
 ## v2.0.2 - 2026.05.27 14
 * improve: standardize the `at` value of RichError thrown in code
 
