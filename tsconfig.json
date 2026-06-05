@@ -3,15 +3,13 @@
 		"module": "esnext",
 		"moduleResolution": "bundler",
 		"target": "esnext",
-		"experimentalDecorators": true,
-		"strict": true,
+		"composite": true,
 		"allowJs": true,
-		"jsx": "preserve",
-		"declarationDir": "./types",
 		"declaration": true,
 		"emitDeclarationOnly": true,
+		"declarationDir": "./types",
 		"types": [
-			"node"
+			"node",
 		],
 	},
 	"include": [

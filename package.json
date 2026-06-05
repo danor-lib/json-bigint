@@ -25,7 +25,7 @@
 		"types/**"
 	],
 	"main": "./index.js",
-	"typings": "./types/index.d.ts",
+	"types": "./types/index.d.ts",
 	"dependencies": {
 		"@danor-lib/error": "^2.0.1"
 	},
